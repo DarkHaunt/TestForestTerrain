@@ -23,6 +23,7 @@ namespace Forest.Character
             _startRotation = _camera.transform.rotation;
         }
 
+
         public void RotateCamera(float angle)
         {
             _xRotation += angle;

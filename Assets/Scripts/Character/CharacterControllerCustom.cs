@@ -8,12 +8,27 @@ namespace Forest.Character
     {
         [SerializeField] private CameraRotator _cameraRotator;
 
-        [SerializeField] private float _moveSpeed;
+        [SerializeField] private float _moveSpeed = 250f;
         [SerializeField] private float _mouseSensetivity = 100f;
 
         private CharacterController _characterController;
-        
-        private Vector3 MoveDirection => new Vector3(Input.GetAxis("Vertical"), 0f , -Input.GetAxis("Horizontal")).normalized;
+
+
+        private Vector3 MoveDirection
+        {
+            get
+            {
+                var yInput = Input.GetAxisRaw("Horizontal");
+                var zInput = Input.GetAxisRaw("Vertical");
+
+                var direction = new Vector3(yInput, 0f, zInput);
+                var localDirection = transform.TransformDirection(direction);
+
+                localDirection = Vector3.ClampMagnitude(localDirection, 1f);
+
+                return localDirection;
+            }
+        }
 
 
         private void Awake()
@@ -53,5 +68,5 @@ namespace Forest.Character
         {
             _characterController.SimpleMove(MoveDirection * Time.deltaTime * _moveSpeed);
         }
-    } 
+    }
 }
